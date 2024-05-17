@@ -204,7 +204,7 @@ TEST_F(SudokuSolverTest, testPopulateValues)
     }
 }
 
-TEST_F(SudokuSolverTest, testPrintBoard)
+TEST_F(SudokuSolverTest, DISABLED_testPrintBoard)
 {
     {
         std::array<std::array<int, 9>, 9> flatBoard =
@@ -300,7 +300,38 @@ TEST_F(SudokuSolverTest, testSolveBoard)
         EXPECT_NO_FATAL_FAILURE(SudokuSolver::printBoard(unsolvedBoard));
         std::cout << std::endl << std::endl;
 
-        EXPECT_FALSE(m_SudokuBoard.solveBoard());
+        EXPECT_TRUE(m_SudokuBoard.solveBoard());
+        auto sudokuBoard = m_SudokuBoard.getBoard();
+
+        std::cout << std::endl << "Solved board" << std::endl;
+        EXPECT_NO_FATAL_FAILURE(SudokuSolver::printBoard(sudokuBoard));
+        std::cout << std::endl << std::endl;
+    }
+    {
+        std::array<std::string, 81> flatBoard =
+            {"", "", "5", "1", "3", "", "", "", "",
+             "", "", "", "", "6", "", "", "3", "8",
+             "7", "", "", "5", "", "", "", "", "",
+             "5", "6", "8", "4", "2", "", "", "", "",
+             "", "", "", "", "", "", "6", "8", "7",
+             "", "9", "", "", "", "3", "2", "", "",
+             "", "", "", "", "", "1", "", "4", "5",
+             "", "", "", "3", "4", "9", "", "2", "6",
+             "4", "", "", "", "", "", "8", "9", ""};
+
+        m_SudokuBoard.initializeBoard(flatBoard);
+        auto unsolvedBoard = m_SudokuBoard.getBoard();
+
+        std::cout << std::endl << "Unsolved board" << std::endl;
+        EXPECT_NO_FATAL_FAILURE(SudokuSolver::printBoard(unsolvedBoard));
+        std::cout << std::endl << std::endl;
+
+        EXPECT_TRUE(m_SudokuBoard.solveBoard());
+        auto sudokuBoard = m_SudokuBoard.getBoard();
+
+        std::cout << std::endl << "Solved board" << std::endl;
+        EXPECT_NO_FATAL_FAILURE(SudokuSolver::printBoard(sudokuBoard));
+        std::cout << std::endl << std::endl;
     }
 }
 

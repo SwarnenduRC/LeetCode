@@ -46,7 +46,7 @@ std::pair<size_t, size_t> SudokuSolver::getNextEmptyCell(const size_t row, const
 {
     auto nextRow = row;
     auto nextCol = col;
-    while (row < ARRAY_LENGTH)
+    while (nextRow < ARRAY_LENGTH)
     {
         if (m_board[nextRow][nextCol] == 0)
             return {nextRow, nextCol};
@@ -59,17 +59,17 @@ std::pair<size_t, size_t> SudokuSolver::getNextEmptyCell(const size_t row, const
 
 bool SudokuSolver::isValidForRow(const int val, const size_t row) const noexcept
 {
-    return !m_rowValues[row][val - 1];  // val -1 because the bitset iduces are from 0 to 8
+    return !m_rowValues[row][val - 1];  // val -1 because the bitset indexes are from 0 to 8
 }
 
 bool SudokuSolver::isValidForCol(const int val, const size_t col) const noexcept
 {
-    return !m_colValues[col][val - 1];  // val -1 because the bitset iduces are from 0 to 8
+    return !m_colValues[col][val - 1];  // val -1 because the bitset indexes are from 0 to 8
 }
 
 bool SudokuSolver::isValidForGrid(const int val, const size_t grid) const noexcept
 {
-    return !m_gridValues[grid][val - 1];    // val -1 because the bitset iduces are from 0 to 8
+    return !m_gridValues[grid][val - 1];    // val -1 because the bitset indexes are from 0 to 8
 }
 
 bool SudokuSolver::isValid(const size_t row, const size_t col) const noexcept
@@ -157,6 +157,14 @@ Matrix SudokuSolver::getBoard() const noexcept
 
 void SudokuSolver::populateValues() noexcept
 {
+    // First unset all the old values
+    for (auto idx = 0; idx < ARRAY_LENGTH; ++idx)
+    {
+        m_rowValues[idx].reset();
+        m_colValues[idx].reset();
+        m_gridValues[idx].reset();
+    }
+    // Then set the fresh values
     for (auto row = 0; row < ARRAY_LENGTH; ++row)
     {
         for (auto col = 0; col < ARRAY_LENGTH; ++col)
@@ -210,4 +218,3 @@ bool SudokuSolver::solve(const size_t startRow, const size_t startCol) noexcept
     m_board[row][col] = 0;  
     return false;
 }
-
